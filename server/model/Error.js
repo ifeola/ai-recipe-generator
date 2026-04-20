@@ -8,7 +8,7 @@ class CustomError extends Error {
 
 class NotFoundError extends CustomError {
 	constructor(message = "Resources not found.", statusCode = 404) {
-		super(this.statusCode, message);
+		super(statusCode, message);
 		this.name = "NotFoundError";
 	}
 }
@@ -18,8 +18,18 @@ class BadRequestError extends CustomError {
 		message = "The server cannot or will not process the request due to an apparent client error.",
 		statusCode = 400
 	) {
-		super(this.statusCode, message);
+		super(statusCode, message);
 		this.name = "BadRequestError";
+	}
+}
+
+class ValidationError extends CustomError {
+	constructor(
+		message = "Validation due to an apparent client error.",
+		statusCode = 400
+	) {
+		super(statusCode, message);
+		this.name = "ValidationError";
 	}
 }
 
@@ -28,14 +38,14 @@ class UnauthorizedError extends CustomError {
 		message = "Authentication falied, please try again.",
 		statusCode = 401
 	) {
-		super(this.statusCode, message);
+		super(statusCode, message);
 		this.name = "UnauthorizedError";
 	}
 }
 
 class ForbiddenError extends CustomError {
 	constructor(message = "Forbidden.", statusCode = 403) {
-		super(this.statusCode, message);
+		super(statusCode, message);
 		this.name = "ForbiddenError";
 	}
 }

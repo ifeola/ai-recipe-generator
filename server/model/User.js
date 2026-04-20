@@ -5,16 +5,13 @@ class User {
 	// Create a new user
 
 	static async create(email, name, password) {
-		const salt = 10;
-		const hashed_password = await bcrypt.hash(password, salt);
-
 		const result = await db.query(
 			`
       insert into users(email, hashed_password, name)
       values ($1, $2, $3)
       returning id, email, name, created_at
       `,
-			[email, hashed_password, name]
+			[email, password, name]
 		);
 
 		return result.rows[0];
@@ -28,7 +25,7 @@ class User {
       `,
 			[email]
 		);
-		return result.rows[0];
+		return result.rows[0] || null;
 	}
 
 	static async findById(id) {
@@ -61,10 +58,7 @@ class User {
 		return result.rows[0];
 	}
 
-	static async updatePassword(id, newPassword) {
-		const salt = 10;
-		const hashed_password = await bcrypt.hash(newPassword, salt);
-
+	static async updatePassword(id, hashed_password) {
 		const result = await db.query(
 			`
         update users
@@ -80,6 +74,12 @@ class User {
 	static async verifyPassword(password, hashed_password) {
 		const isVerified = await bcrypt.compare(password, hashed_password);
 		return isVerified;
+	}
+
+	static async hashPassword(password) {
+		const salt = 10;
+		const hashedPassword = await bcrypt.hash(password, salt);
+		return hashedPassword;
 	}
 }
 
