@@ -25,7 +25,7 @@ class User {
       `,
 			[email]
 		);
-		return result.rows[0] || null;
+		return result.rows[0];
 	}
 
 	static async findById(id) {
